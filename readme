@@ -1,0 +1,4 @@
+This is a gravity simulation.
+It is ported from this: http://www.nowykurier.com/toys/gravity/gravity.html
+It uses the Slick library: http://slick.cokeandcode.com/
+It uses the phys2d library: http://www.cokeandcode.com/phys2d/
