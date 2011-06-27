@@ -4,10 +4,6 @@ import org.newdawn.slick.geom.Path;
 import org.newdawn.slick.Color;
 
 public class ColoredPath extends Path {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3248129787719850201L;
 	private Color color;
 	
 	/**

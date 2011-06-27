@@ -19,7 +19,7 @@ import java.awt.Point;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-public class SimpleTest extends BasicGame implements CollisionListener {
+public class Main extends BasicGame implements CollisionListener {
 	final static float H = 0.005f; //provides a constant so that acceleration can be scaled to a more managable size
 	
 	private World world;
@@ -31,7 +31,7 @@ public class SimpleTest extends BasicGame implements CollisionListener {
 	private ArrayList<ColoredPath> deadPaths;
 	private int[] sizes = {1, 1000, 10000, 100000, 1000000, 10000000};
 	
-    public SimpleTest() {
+    public Main() {
         super("SimpleTest");
         world = new World(new Vector2f(0.0f, 0.0f), 10, new BruteCollisionStrategy());
         world.addListener(this);
@@ -218,7 +218,7 @@ public class SimpleTest extends BasicGame implements CollisionListener {
     public static void main(String[] args) {
     	try {
         	Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            AppGameContainer app = new AppGameContainer(new SimpleTest(), screen.width, screen.height, true); 
+            AppGameContainer app = new AppGameContainer(new Main(), screen.width, screen.height, true); 
             app.setSmoothDeltas(true); 
             app.setVSync(true); 
             app.setTargetFrameRate(60);

@@ -7,11 +7,6 @@ import net.phys2d.math.Vector2f;
 
 
 public class Particle extends Body {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7667890996319826698L;
 	
 	private Color colour;
 	private ColoredPath path;
