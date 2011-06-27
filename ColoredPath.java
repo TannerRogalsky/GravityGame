@@ -31,8 +31,8 @@ public class ColoredPath extends Path {
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
-    {
+	{
 		gr.setColor(color);
-        gr.draw(this);
-    }
+		gr.draw(this);
+	}
 }

@@ -23,20 +23,20 @@ public class NewParticle extends Circle {
 	}
 	
 	public void update(GameContainer gc, StateBasedGame sb, int delta)
-    {
+	{
 		this.setX(this.getX() + velocity.getX());
 		this.setY(this.getY() + velocity.getY());
 		path.lineTo(this.getCenterX(), this.getCenterY());
-    }
+	}
  
-    public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
-    {
-    	gr.setColor(color);
-        gr.draw(this);
-    }
+	public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
+	{
+		gr.setColor(color);
+		gr.draw(this);
+	}
 	
-    @Override
+	@Override
 	public String toString(){
-        return this.getCenterX() + ", " + this.getCenterY();
-    }
+		return this.getCenterX() + ", " + this.getCenterY();
+	}
 }
