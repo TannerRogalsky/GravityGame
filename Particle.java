@@ -1,3 +1,5 @@
+package com.tanner;
+
 import org.newdawn.slick.Color;
 import net.phys2d.raw.Body;
 import net.phys2d.raw.shapes.Circle;

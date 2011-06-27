@@ -1,3 +1,5 @@
+package com.tanner;
+
 import org.newdawn.slick.geom.Path;
 import org.newdawn.slick.Color;
 
