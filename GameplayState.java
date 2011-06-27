@@ -1,12 +1,12 @@
 package com.tanner;
 
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 import net.phys2d.raw.World;
 import net.phys2d.raw.Body;
@@ -16,10 +16,9 @@ import net.phys2d.raw.CollisionListener;
 import net.phys2d.raw.CollisionEvent;
 
 import java.awt.Point;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
-public class Main extends BasicGame implements CollisionListener {
+public class GameplayState extends BasicGameState implements CollisionListener {
 	final static float H = 0.005f; //provides a constant so that acceleration can be scaled to a more managable size
 	
 	private World world;
@@ -31,8 +30,7 @@ public class Main extends BasicGame implements CollisionListener {
 	private ArrayList<ColoredPath> deadPaths;
 	private int[] sizes = {1, 1000, 10000, 100000, 1000000, 10000000};
 	
-	public Main() {
-		super("SimpleTest");
+	public GameplayState() {
 		world = new World(new Vector2f(0.0f, 0.0f), 10, new BruteCollisionStrategy());
 		world.addListener(this);
 		mass = 1000;
@@ -132,32 +130,6 @@ public class Main extends BasicGame implements CollisionListener {
 	}
 	
 	@Override
-	public void init(GameContainer container) throws SlickException {
-		//protoDisk(container.getWidth()/2, container.getHeight()/2);
-	}
-
-	@Override
-	public void update(GameContainer container, int delta)
-			throws SlickException {
-		for (int i = 0; i < world.getBodies().size(); i++){
-			Body bodyA = world.getBodies().get(i);
-			for (int j = 0; j < world.getBodies().size(); j++){
-				Body bodyB = world.getBodies().get(j);
-				if(!bodyA.equals(bodyB)){
-					float xDist = bodyB.getPosition().getX() - bodyA.getPosition().getX();
-					float yDist = bodyB.getPosition().getY() - bodyA.getPosition().getY();
-					float distance = bodyA.getPosition().distance(bodyB.getPosition());
-					float componentAccel = bodyB.getMass() / (distance * distance);
-					bodyA.adjustVelocity(new Vector2f(componentAccel * (xDist / distance) * H, componentAccel * (yDist / distance) * H));
-				}
-			}
-			((Particle)bodyA).updatePath();
-		}
-		
-		world.step();
-	}
-	
-	@Override
 	public void collisionOccured(CollisionEvent event){
 		Particle bodyA = (Particle)event.getBodyA();
 		Particle bodyB = (Particle)event.getBodyB();
@@ -174,10 +146,17 @@ public class Main extends BasicGame implements CollisionListener {
 		bodyB.getPath().lineTo(newBody.getCenterPosition().getX(), newBody.getCenterPosition().getY());
 		deadPaths.add(bodyA.getPath());
 		deadPaths.add(bodyB.getPath());
+	}	
+
+	@Override
+	public void init(GameContainer arg0, StateBasedGame arg1)
+			throws SlickException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void render(GameContainer container, Graphics g)
+	public void render(GameContainer container, StateBasedGame sb, Graphics g)
 			throws SlickException {
 		g.setColor(Color.magenta);
 		g.drawString("Mass: " + mass, 0, container.getHeight() - (g.getFont().getLineHeight() + 2) * 2);
@@ -212,19 +191,33 @@ public class Main extends BasicGame implements CollisionListener {
 			Particle particle = (Particle)world.getBodies().get(x);
 			g.setColor(particle.getColor());
 			g.fill(particle.getDrawableCircle());
-		}
+		}		
 	}
 
-	public static void main(String[] args) {
-		try {
-			Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			AppGameContainer app = new AppGameContainer(new Main(), screen.width, screen.height, true); 
-			app.setSmoothDeltas(true); 
-			app.setVSync(true); 
-			app.setTargetFrameRate(60);
-			app.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
+	@Override
+	public void update(GameContainer gc, StateBasedGame sb, int delta)
+			throws SlickException {
+		for (int i = 0; i < world.getBodies().size(); i++){
+			Body bodyA = world.getBodies().get(i);
+			for (int j = 0; j < world.getBodies().size(); j++){
+				Body bodyB = world.getBodies().get(j);
+				if(!bodyA.equals(bodyB)){
+					float xDist = bodyB.getPosition().getX() - bodyA.getPosition().getX();
+					float yDist = bodyB.getPosition().getY() - bodyA.getPosition().getY();
+					float distance = bodyA.getPosition().distance(bodyB.getPosition());
+					float componentAccel = bodyB.getMass() / (distance * distance);
+					bodyA.adjustVelocity(new Vector2f(componentAccel * (xDist / distance) * H, componentAccel * (yDist / distance) * H));
+				}
+			}
+			((Particle)bodyA).updatePath();
 		}
+		
+		world.step();		
+	}
+
+	@Override
+	public int getID() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
